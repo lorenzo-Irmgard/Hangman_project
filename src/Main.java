@@ -103,11 +103,11 @@ public class Main {
         return word;
     }
 
-    public static int wordPrint(String word, List<Character> validChars) {
+    public static int wordPrint(String word, List<Character> allChars) {
         int cnt = 0;
         System.out.println("Загаданное состоит из " + word.length() + " букв:");
         for (int i = 0; i < word.length(); i++) {
-            if (validChars.contains(word.charAt(i))) {
+            if (allChars.contains(word.charAt(i))) {
                 System.out.print(word.charAt(i));
                 cnt++;
             } else {
@@ -126,7 +126,14 @@ public class Main {
             letter = '~';
             return letter;
         }
-        letter = entry.charAt(0);
+        letter = letterCheck(entry.charAt(0));
+        if (letter >= 1072 && letter <= 1103) {
+            letter = Character.toUpperCase(letter);
+        }
+        return letter;
+    }
+
+    public static char letterCheck(char letter) {
         if (letter < 1040 || letter > 1103) {
             if (letter == 1025 || letter == 1105) {
                 System.out.println("Вместо ё используйте е");
@@ -135,31 +142,30 @@ public class Main {
             System.out.println("Некорректный ввод, попробуй еще раз\n");
             letter = '~';
         }
-        if (letter >= 1072 && letter <=1103) {
-            letter = Character.toUpperCase(letter);
-        }
         return letter;
     }
 
     public static int menuCheck(char letter) {
         int code = 0;
-        char userAns;
         letter = Character.toLowerCase(letter);
         switch (letter) {
             case 'e':
-                System.out.println("Вы точно хотите закончить игру? Введите Y для подтверждения или любой символ для отмены");
-                userAns = userEnters.nextLine().charAt(0);
-                userAns = Character.toLowerCase(userAns);
-                if (userAns == 'y') code = 1;
+                System.out.println("Вы точно хотите закончить игру? Введите Y для подтверждения или любой другой символ для отмены");
+                if (operationVerify()) code = 1;
                 break;
             case 'n':
-                System.out.println("Вы точно хотите выйти в меню? Введите Y для подтверждения");
-                userAns = userEnters.nextLine().charAt(0);
-                userAns = Character.toLowerCase(userAns);
-                if (userAns == 'y') code = 2;
+                System.out.println("Вы точно хотите выйти в меню? Введите Y для подтверждения или любой другой символ для отмены");
+                if (operationVerify()) code = 2;
                 break;
         }
         return code;
+    }
+
+    public static boolean operationVerify() {
+        char userAns;
+        userAns = userEnters.nextLine().charAt(0);
+        userAns = Character.toLowerCase(userAns);
+        return userAns == 'y';
     }
 
     public static void printUsedLetters(List <Character> allChars) {
